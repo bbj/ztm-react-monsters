@@ -1,33 +1,29 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";         //this is more instruction for babel,webpack
-                            //does not really import anything!
 
-class App extends Component {
+class App extends React.Component {
   constructor() { //optional, but due to call of super(), we need it
     super(); //call constructor of parent class: Component (mandatory) 
     this.state = {
-      monsters: [
-        {
-          name: 'Frankenstein',
-          id: 'asc1'
-        },
-        {
-          name: 'Dracula',
-          id: 'asr2'
-        },
-        {
-          name: 'Zombie',
-          id: 'as1w'
-        },
-      ],
+      monsters: [],
     };
+  }
+
+  /**
+   * LifeCycle method, called when React has put this component on the page, 
+   * for the first time
+   */
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => response.json()) //convert Response to JSON
+    .then(users => this.setState({ monsters: users }))
   }
 
   render() {
     return (
       <div className="App">
         {this.state.monsters.map(monster => (
-            <h1 key={monster.id}> {monster.name} </h1>
+          <h1 key={monster.id}> {monster.name} </h1>
         ))}
       </div>
     );
@@ -37,13 +33,13 @@ class App extends Component {
 export default App;
 
 /*
-  className: 
+  className:
       cannot use "class" reserved to ES classes or CSS
       it is a JSX attribute
-  onClick: 
+  onClick:
       cannot use "onclick" reserved to HTML
       it is a JSX attribute too
-      JSX is trying to "mimic" HTML ... 
+      JSX is trying to "mimic" HTML ...
   this.setState({...})
       we are not allowed to modify this.state
       unidirectional!!!
